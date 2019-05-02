@@ -4,3 +4,4 @@ models/
 tags
 *.hdf5
 Datasets/
+.venv/
