@@ -13,6 +13,9 @@ requests = "*"
 scikit-learn = "*"
 textgenrnn = "*"
 tqdm = "*"
+markovify = "*"
+xlrd = "*"
+tensorflow = "*"
 
 [requires]
 python_version = "3.7"

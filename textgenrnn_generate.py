@@ -2,8 +2,6 @@ import datetime
 import time
 import argparse
 import logging
-import os
-import errno
 from pathlib import Path
 from textgenrnn import textgenrnn
 
@@ -29,13 +27,9 @@ def main():
     generated_text = textgen.generate(number, return_as_list=True, temperature=temperature)
     logger.debug(generated_text)
 
-    try:
-        os.makedirs('Exports')
-    except OSError as e:
-        if e.errno != errno.EEXIST:
-            raise
+    Path('Exports').mkdir(parents=True, exist_ok=True)
     filename = Path(file).stem
-    with open(f"Exports/{filename}_{temperature}.txt", 'a') as f:
+    with open(f"Exports/{filename}_{temperature}_textgenrnn.txt", 'a') as f:
         test_hour = datetime.datetime.now().strftime("%Y/%m/%d %H:%M")
         f.write(f"{test_hour}\n")
         for i in generated_text:
