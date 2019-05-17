@@ -11,13 +11,10 @@ temps_debut = time.time()
 
 def main():
     args = parse_args()
-    file = args.file
-    if not file:
+    if not args.file:
         logger.error("No file entered. Use -f flag.")
         exit()
-    iteration = args.iteration
-    temperature = args.temperature
-    filename = Path(file).stem
+    filename = Path(args.file).stem
 
     logger.debug("Download model")
     gpt2.download_gpt2()
@@ -25,12 +22,12 @@ def main():
     logger.debug("Starting GPT-2 session")
     sess = gpt2.start_tf_sess()
     logger.debug("Finetuning model")
-    gpt2.finetune(sess, file, steps=iteration)
+    gpt2.finetune(sess, args.file, steps=args.iteration)
 
     logger.debug("Generating text")
     while True:
-        generated_text = gpt2.generate(sess, return_as_list=True, temperature=temperature)[0]
-        with open(f"Exports/{filename}_{temperature}_gpt2simple.txt", 'a') as f:
+        generated_text = gpt2.generate(sess, return_as_list=True, temperature=args.temperature)[0]
+        with open(f"Exports/{filename}_{args.temperature}_gpt2simple.txt", 'a') as f:
             test_hour = datetime.datetime.now().strftime("%Y/%m/%d %H:%M")
             f.write(f"{test_hour}\n")
             for i in generated_text:

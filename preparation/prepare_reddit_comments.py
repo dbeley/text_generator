@@ -10,16 +10,15 @@ temps_debut = time.time()
 
 def main():
     args = parse_args()
-    file = args.file
-    if not file:
+    if not args.file:
         logger.error("No file entered. Use -f flag.")
         exit()
 
-    df = pd.read_excel(file)
+    df = pd.read_excel(args.file)
 
     Path("Datasets").mkdir(parents=True, exist_ok=True)
 
-    df['Commentaire'].to_csv(f"Datasets/Export_{Path(file).stem}.csv", index=False)
+    df['Commentaire'].to_csv(f"Datasets/Export_{Path(args.file).stem}.csv", index=False)
 
     logger.info("Runtime : %.2f seconds" % (time.time() - temps_debut))
 

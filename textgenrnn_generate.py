@@ -11,8 +11,7 @@ temps_debut = time.time()
 
 def main():
     args = parse_args()
-    file = args.file
-    if not file:
+    if not args.file:
         logger.error("No file entered. Use -f flag.")
         exit()
     iteration = args.iteration
@@ -21,14 +20,14 @@ def main():
 
     textgen = textgenrnn()
 
-    logger.debug(f"Training model using {file}")
-    textgen.train_from_file(file, num_epochs=iteration)
+    logger.debug("Training model using %s", args.file)
+    textgen.train_from_file(args.file, num_epochs=iteration)
     logger.debug("Generating text")
     generated_text = textgen.generate(number, return_as_list=True, temperature=temperature)
     logger.debug(generated_text)
 
     Path('Exports').mkdir(parents=True, exist_ok=True)
-    filename = Path(file).stem
+    filename = Path(args.file).stem
     with open(f"Exports/{filename}_{temperature}_textgenrnn.txt", 'a') as f:
         test_hour = datetime.datetime.now().strftime("%Y/%m/%d %H:%M")
         f.write(f"{test_hour}\n")

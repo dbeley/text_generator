@@ -11,12 +11,11 @@ temps_debut = time.time()
 
 def main():
     args = parse_args()
-    file = args.file
-    if not file:
+    if not args.file:
         logger.error("No file entered. Use -f flag.")
         exit()
 
-    with open(file) as f:
+    with open(args.file) as f:
         text_model = markovify.NewlineText(f, retain_original=False, state_size=3)
 
     sentences = []
@@ -29,7 +28,7 @@ def main():
         sentences.append(text_model.make_short_sentence(140))
 
     Path("Exports").mkdir(parents=True, exist_ok=True)
-    filename = Path(file).stem
+    filename = Path(args.file).stem
     with open(f"Exports/{filename}_markovify.txt", 'a') as f:
         test_hour = datetime.datetime.now().strftime("%Y/%m/%d %H:%M")
         f.write(f"{test_hour}\n")
