@@ -16,7 +16,9 @@ def main():
         exit()
 
     with open(args.file) as f:
-        text_model = markovify.NewlineText(f, retain_original=False, state_size=3)
+        text_model = markovify.NewlineText(
+            f, retain_original=False, state_size=3
+        )
 
     sentences = []
     for i in range(50):
@@ -29,7 +31,7 @@ def main():
 
     Path("Exports").mkdir(parents=True, exist_ok=True)
     filename = Path(args.file).stem
-    with open(f"Exports/{filename}_markovify.txt", 'a') as f:
+    with open(f"Exports/{filename}_markovify.txt", "a") as f:
         test_hour = datetime.datetime.now().strftime("%Y/%m/%d %H:%M")
         f.write(f"{test_hour}\n")
         for i in sentences:
@@ -39,14 +41,25 @@ def main():
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Script markovify')
-    parser.add_argument('--debug', help="Display debugging information", action="store_const", dest="loglevel", const=logging.DEBUG, default=logging.INFO)
-    parser.add_argument('-f', '--file', help="Text file to train the model from", type=str)
+    parser = argparse.ArgumentParser(
+        description="Generate text with markovify"
+    )
+    parser.add_argument(
+        "--debug",
+        help="Display debugging information",
+        action="store_const",
+        dest="loglevel",
+        const=logging.DEBUG,
+        default=logging.INFO,
+    )
+    parser.add_argument(
+        "-f", "--file", help="Text file to train the model from", type=str
+    )
     args = parser.parse_args()
 
     logging.basicConfig(level=args.loglevel)
     return args
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

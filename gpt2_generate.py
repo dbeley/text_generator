@@ -26,8 +26,12 @@ def main():
 
     logger.debug("Generating text")
     while True:
-        generated_text = gpt2.generate(sess, return_as_list=True, temperature=args.temperature)[0]
-        with open(f"Exports/{filename}_{args.temperature}_gpt2simple.txt", 'a') as f:
+        generated_text = gpt2.generate(
+            sess, return_as_list=True, temperature=args.temperature
+        )[0]
+        with open(
+            f"Exports/{filename}_{args.temperature}_gpt2simple.txt", "a"
+        ) as f:
             test_hour = datetime.datetime.now().strftime("%Y/%m/%d %H:%M")
             f.write(f"{test_hour}\n")
             for i in generated_text:
@@ -36,16 +40,39 @@ def main():
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Script gpt2simple')
-    parser.add_argument('--debug', help="Display debugging information", action="store_const", dest="loglevel", const=logging.DEBUG, default=logging.INFO)
-    parser.add_argument('-f', '--file', help="Text file to train the model from", type=str)
-    parser.add_argument('-i', '--iteration', help="Number of iteration for the training. Default = 1", type=int, default=1)
-    parser.add_argument('-t', '--temperature', help="Temperature. Default = 0.5", type=float, default=0.5)
+    parser = argparse.ArgumentParser(
+        description="Generate text with gpt2_simple"
+    )
+    parser.add_argument(
+        "--debug",
+        help="Display debugging information",
+        action="store_const",
+        dest="loglevel",
+        const=logging.DEBUG,
+        default=logging.INFO,
+    )
+    parser.add_argument(
+        "-f", "--file", help="Text file to train the model from", type=str
+    )
+    parser.add_argument(
+        "-i",
+        "--iteration",
+        help="Number of iteration for the training. Default = 1",
+        type=int,
+        default=1,
+    )
+    parser.add_argument(
+        "-t",
+        "--temperature",
+        help="Temperature. Default = 0.5",
+        type=float,
+        default=0.5,
+    )
     args = parser.parse_args()
 
     logging.basicConfig(level=args.loglevel)
     return args
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

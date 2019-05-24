@@ -23,12 +23,14 @@ def main():
     logger.debug("Training model using %s", args.file)
     textgen.train_from_file(args.file, num_epochs=iteration)
     logger.debug("Generating text")
-    generated_text = textgen.generate(number, return_as_list=True, temperature=temperature)
+    generated_text = textgen.generate(
+        number, return_as_list=True, temperature=temperature
+    )
     logger.debug(generated_text)
 
-    Path('Exports').mkdir(parents=True, exist_ok=True)
+    Path("Exports").mkdir(parents=True, exist_ok=True)
     filename = Path(args.file).stem
-    with open(f"Exports/{filename}_{temperature}_textgenrnn.txt", 'a') as f:
+    with open(f"Exports/{filename}_{temperature}_textgenrnn.txt", "a") as f:
         test_hour = datetime.datetime.now().strftime("%Y/%m/%d %H:%M")
         f.write(f"{test_hour}\n")
         for i in generated_text:
@@ -38,17 +40,46 @@ def main():
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Script textgenrnn_init')
-    parser.add_argument('--debug', help="Display debugging information", action="store_const", dest="loglevel", const=logging.DEBUG, default=logging.INFO)
-    parser.add_argument('-f', '--file', help="Text file to train the model from", type=str)
-    parser.add_argument('-i', '--iteration', help="Number of iteration for the training. Default = 1", type=int, default=1)
-    parser.add_argument('-n', '--number', help="Number of string to generate (~3/seconds). Default = 10", type=int, default=10)
-    parser.add_argument('-t', '--temperature', help="Temperature. Default = 0.5", type=float, default=0.5)
+    parser = argparse.ArgumentParser(
+        description="Generate text with textgenrnn"
+    )
+    parser.add_argument(
+        "--debug",
+        help="Display debugging information",
+        action="store_const",
+        dest="loglevel",
+        const=logging.DEBUG,
+        default=logging.INFO,
+    )
+    parser.add_argument(
+        "-f", "--file", help="Text file to train the model from", type=str
+    )
+    parser.add_argument(
+        "-i",
+        "--iteration",
+        help="Number of iteration for the training. Default = 1",
+        type=int,
+        default=1,
+    )
+    parser.add_argument(
+        "-n",
+        "--number",
+        help="Number of string to generate (~3/seconds). Default = 10",
+        type=int,
+        default=10,
+    )
+    parser.add_argument(
+        "-t",
+        "--temperature",
+        help="Temperature. Default = 0.5",
+        type=float,
+        default=0.5,
+    )
     args = parser.parse_args()
 
     logging.basicConfig(level=args.loglevel)
     return args
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
