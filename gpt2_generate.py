@@ -24,6 +24,8 @@ def main():
     logger.debug("Finetuning model")
     gpt2.finetune(sess, args.file, steps=args.iteration)
 
+    Path("Exports").mkdir(parent=False, exist_ok=True)
+
     logger.debug("Generating text")
     while True:
         generated_text = gpt2.generate(
